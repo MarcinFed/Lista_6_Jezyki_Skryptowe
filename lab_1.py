@@ -33,7 +33,7 @@ class SSHLogEntry(ABC):
     def __eq__(self, other):
         if not isinstance(other, SSHLogEntry):
             raise TypeError("Trying to compare non SSHLogEntry object")
-        return (self.timestamp, self.host_name, self.pid_number, self.__message) == (other.timestamp, other.host_name, other.pid_numberm, other.__message)
+        return (self.timestamp, self.host_name, self.pid_number, self.__message) == (other.timestamp, other.host_name, other.pid_number, other.__message)
 
     def __lt__(self, other):
         if not isinstance(other, SSHLogEntry):

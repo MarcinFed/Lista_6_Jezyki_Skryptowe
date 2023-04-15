@@ -32,7 +32,10 @@ def parse_log_line(log):
 
 
 def get_user_name(message):
-    return re.findall(USER_NAME_PATTERN, message)[0]
+    try:
+        return re.findall(USER_NAME_PATTERN, message)[0]
+    except Exception:
+        raise IndexError("No user_name in message")
 
 
 def get_error_msg(message):
