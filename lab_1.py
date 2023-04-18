@@ -18,28 +18,27 @@ TYPE_ERROR_MESSAGE = "Trying to compare non SSHLogEntry object"
 MATCHING_EXCEPTION_MESSAGE = "No match in log line!"
 
 
-def parse_log_line(log):
-    try:
-        match = re.match(LOG_PATTERN, log)
-        if not match:
-            return {}
-        return {
-            TIMESTAMP: datetime.datetime.strptime(match.group(TIMESTAMP_MATCH), TIMESTAMP_FORMAT),
-            HOST_NAME: match.group(HOST_NAME_MATCH),
-            PID_NUMBER: match.group(PID_NUMBER_MATCH),
-            MESSAGE: match.group(MESSAGE_MATCH),
-        }
-    except Exception:
-        raise Exception(MATCHING_EXCEPTION_MESSAGE)
-
-
 class SSHLogEntry(ABC):
     def __init__(self, log):
-        prepared_log = parse_log_line(log)
+        prepared_log = self.parse_log_line(log)
         self.timestamp = prepared_log[TIMESTAMP]
         self._message = prepared_log[MESSAGE]
         self.pid_number = prepared_log[PID_NUMBER]
         self.host_name = prepared_log[HOST_NAME] if prepared_log[HOST_NAME] else None
+
+    def parse_log_line(log):
+        try:
+            match = re.match(LOG_PATTERN, log)
+            if not match:
+                return {}
+            return {
+                TIMESTAMP: datetime.datetime.strptime(match.group(TIMESTAMP_MATCH), TIMESTAMP_FORMAT),
+                HOST_NAME: match.group(HOST_NAME_MATCH),
+                PID_NUMBER: match.group(PID_NUMBER_MATCH),
+                MESSAGE: match.group(MESSAGE_MATCH),
+            }
+        except Exception:
+            raise Exception(MATCHING_EXCEPTION_MESSAGE)
 
     def __str__(self):
         return f"[{self.timestamp}] [{self.pid_number}] [{self.host_name}] [{self._message}]" if self.host_name else f"[{self.timestamp}] [{self.pid_number}] [{self._message}]"

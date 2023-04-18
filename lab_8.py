@@ -3,6 +3,7 @@ from lab_7 import SSHLogJournal
 from lab_2 import RejectedPasswordSSHLogEntry, AcceptedPasswordSSHLogEntry, ErrorSSHLogEntry, OtherSSHLogEntry
 
 VALIDATE_PATTERN = r"^[a-z_][a-z0-9_-]{0,31}$"
+VALUE_ERROR_MESSAGE = "Invalid user_name"
 
 
 class SSHUser:
@@ -12,7 +13,7 @@ class SSHUser:
 
     def validate(self):
         if not re.match(VALIDATE_PATTERN, self.user_name):
-            raise ValueError("Invalid user_name")
+            raise ValueError(VALUE_ERROR_MESSAGE)
         return True
 
     def __repr__(self):
